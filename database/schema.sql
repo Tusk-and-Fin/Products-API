@@ -6,33 +6,41 @@ CREATE TABLE product (
   description varchar,
   category varchar(80),
   default_price int,
-  created_at timestamp,
-  updated_at timestamp
 );
 CREATE TABLE features (
-  id int primary key references products(id),
+  id int primary key,
+  product_id int references product(id),
   feature varchar(80),
-  value varchar(80),
+  value varchar(80)
 );
 CREATE TABLE styles (
-  style_id int primary key,
-  product_id int references products(id),
+  id int primary key,
+  product_id int references product(id),
   name varchar(80),
-  original_price int,
   sale_price int,
-  default boolean
+  original_price int,
+  "default" boolean
 );
 CREATE TABLE related (
-  product_id int primary key references products(id),
-  related integer[]
+  id int primary key,
+  current_product_id int references product(id),
+  related_product_id int references product(id)
 );
 CREATE TABLE photos (
-  style_id int primary key references styles(style_id),
-  urls varchar(200)[][]
+  id int primary key,
+  styleId int references styles(id),
+  url text,
+  thumbnail_url text
 );
 CREATE TABLE skus (
-  sku int primary key,
-  style_id int references styles(style_id),
-  size varchar(5),
-  quantity int
+  id int primary key,
+  styleId int references styles(id),
+  size varchar(15),
+  quantity smallint
 );
+COPY product FROM '/home/waterlinx/hackreactor/RFP2307/SDC/product.csv' (DELIMITER ',', FORMAT csv, HEADER);
+COPY features FROM '/home/waterlinx/hackreactor/RFP2307/SDC/styles.csv' (DELIMITER ',', FORMAT csv, HEADER);
+COPY styles FROM '/home/waterlinx/hackreactor/RFP2307/SDC/styles.csv' (DELIMITER ',', FORMAT csv, HEADER, NULL "NULL");
+COPY related FROM '/home/waterlinx/hackreactor/RFP2307/SDC/related.csv' (DELIMITER ',', FORMAT csv, HEADER, NULL 0);
+COPY photos FROM '/home/waterlinx/hackreactor/RFP2307/SDC/photos.csv' (DELIMITER ',', FORMAT csv, HEADER);
+COPY skus FROM '/home/waterlinx/hackreactor/RFP2307/SDC/skus.csv' (DELIMITER ',', FORMAT csv, HEADER);

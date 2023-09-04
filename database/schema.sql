@@ -44,3 +44,5 @@ COPY styles FROM '/home/waterlinx/hackreactor/RFP2307/SDC/styles.csv' (DELIMITER
 COPY related FROM '/home/waterlinx/hackreactor/RFP2307/SDC/related.csv' (DELIMITER ',', FORMAT csv, HEADER, NULL 0);
 COPY photos FROM '/home/waterlinx/hackreactor/RFP2307/SDC/photos.csv' (DELIMITER ',', FORMAT csv, HEADER);
 COPY skus FROM '/home/waterlinx/hackreactor/RFP2307/SDC/skus.csv' (DELIMITER ',', FORMAT csv, HEADER);
+CREATE INDEX idx_current_product_id ON related (current_product_id);
+CREATE INDEX idx_related_product_id ON related (related_product_id);

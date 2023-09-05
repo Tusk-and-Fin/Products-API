@@ -19,7 +19,7 @@ CREATE TABLE styles (
   name varchar(80),
   sale_price int,
   original_price int,
-  "default" boolean
+  "default?" boolean
 );
 CREATE TABLE related (
   id int primary key,

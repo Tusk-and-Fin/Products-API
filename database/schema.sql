@@ -5,7 +5,7 @@ CREATE TABLE product (
   slogan varchar,
   description varchar,
   category varchar(80),
-  default_price int,
+  default_price int
 );
 CREATE TABLE features (
   id int primary key,
@@ -46,3 +46,7 @@ COPY photos FROM '/home/waterlinx/hackreactor/RFP2307/SDC/photos.csv' (DELIMITER
 COPY skus FROM '/home/waterlinx/hackreactor/RFP2307/SDC/skus.csv' (DELIMITER ',', FORMAT csv, HEADER);
 CREATE INDEX idx_current_product_id ON related (current_product_id);
 CREATE INDEX idx_related_product_id ON related (related_product_id);
+CREATE INDEX idx_skus_style_id ON skus (styleId);
+CREATE INDEX idx_photos_style_id ON photos (styleId);
+CREATE INDEX idx_photos_url ON photos (url);
+CREATE INDEX idx_photos_thumbnail_url ON photos (thumbnail_url);

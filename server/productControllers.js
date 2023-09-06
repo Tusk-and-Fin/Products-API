@@ -43,7 +43,6 @@ const get = (req, res) => {
     WHERE product_id = ${req.path.split('/')[2]}
     GROUP BY styles.id, styles.name`)
     .then((data) => {
-      console.log(data.rows);
       res.send(data.rows)})
     .catch((err) => console.log(err));
   }

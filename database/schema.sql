@@ -1,6 +1,5 @@
 CREATE TABLE product (
   id int primary key,
-  campus varchar(10),
   name varchar(80),
   slogan varchar,
   description varchar,
@@ -39,8 +38,8 @@ CREATE TABLE skus (
   quantity smallint
 );
 COPY product FROM '/home/waterlinx/hackreactor/RFP2307/SDC/product.csv' (DELIMITER ',', FORMAT csv, HEADER);
-COPY features FROM '/home/waterlinx/hackreactor/RFP2307/SDC/styles.csv' (DELIMITER ',', FORMAT csv, HEADER);
-COPY styles FROM '/home/waterlinx/hackreactor/RFP2307/SDC/styles.csv' (DELIMITER ',', FORMAT csv, HEADER, NULL "NULL");
+COPY features FROM '/home/waterlinx/hackreactor/RFP2307/SDC/features.csv' (DELIMITER ',', FORMAT csv, HEADER);
+COPY styles FROM '/home/waterlinx/hackreactor/RFP2307/SDC/styles.csv' (DELIMITER ',', FORMAT csv, HEADER, NULL "null");
 COPY related FROM '/home/waterlinx/hackreactor/RFP2307/SDC/related.csv' (DELIMITER ',', FORMAT csv, HEADER, NULL 0);
 COPY photos FROM '/home/waterlinx/hackreactor/RFP2307/SDC/photos.csv' (DELIMITER ',', FORMAT csv, HEADER);
 COPY skus FROM '/home/waterlinx/hackreactor/RFP2307/SDC/skus.csv' (DELIMITER ',', FORMAT csv, HEADER);

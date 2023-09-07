@@ -19,7 +19,7 @@ const get = (req, res) => {
       ON product.id = features.product_id
       WHERE product.id = ${req.path.split('/')[2]}
       GROUP BY product.id, product.name`)
-      .then((data) => res.send(data.rows))
+      .then((data) => res.send(data.rows[0]))
       .catch((err) => console.log(err));
   } else if (req.path.split('/')[3] === 'related') {
   //get related products
@@ -43,6 +43,13 @@ const get = (req, res) => {
     WHERE product_id = ${req.path.split('/')[2]}
     GROUP BY styles.id, styles.name`)
     .then((data) => {
+      var results = [];
+      for (var i = 0; i < data.rows.length; i++) {
+        results.push(data.rows[i]);
+      }
+      data.rows = {
+        product_id: req.path.split('/')[2],
+        results: results}
       res.send(data.rows)})
     .catch((err) => console.log(err));
   }

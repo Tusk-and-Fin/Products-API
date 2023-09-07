@@ -33,20 +33,30 @@ const get = (req, res) => {
     .catch((err) => console.log(err));
   } else if (req.path.split('/')[3] === 'styles') {
     //get styles of product
-    db.query(`SELECT styles.id AS style_id, name, original_price, sale_price, "default?", JSON_AGG(JSON_BUILD_OBJECT('thumbnail_url', photos.thumbnail_url, 'url', photos.url))
-    AS photos, JSONB_OBJECT_AGG(skus.id, JSONB_BUILD_OBJECT('size', skus.size, 'quantity', skus.quantity)) AS skus
+    db.query(`
+    SELECT styles.id AS style_id,
+    name,
+    original_price,
+    sale_price,
+    "default?",
+    (SELECT JSON_AGG(JSON_BUILD_OBJECT('thumbnail_url', photos.thumbnail_url, 'url', photos.url))
+    FROM photos
+    WHERE photos.styleId = styles.id
+    ) AS photos,
+    JSONB_OBJECT_AGG(skus.id, JSONB_BUILD_OBJECT('size', skus.size, 'quantity', skus.quantity)) AS skus
     FROM "styles"
     JOIN photos
-    ON styles.id = photos.styleId
+    ON photos.styleId = styles.id
     JOIN skus
     ON styles.id = skus.styleId
     WHERE product_id = ${req.path.split('/')[2]}
     GROUP BY styles.id, styles.name`)
     .then((data) => {
       var results = [];
-      for (var i = 0; i < data.rows.length; i++) {
-        results.push(data.rows[i]);
-      }
+      results.push(data.rows);
+      // for (var i = 0; i < data.rows.length; i++) {
+      //   results.push(data.rows[i]);
+      // }
       data.rows = {
         product_id: req.path.split('/')[2],
         results: results}

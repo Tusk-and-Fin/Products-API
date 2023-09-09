@@ -49,22 +49,27 @@ const get = (req, res) => {
       original_price,
       sale_price,
       "default?",
-      JSON_AGG(JSON_BUILD_OBJECT('thumbnail_url', photos.thumbnail_url, 'url', photos.url)) AS photos,
+      (SELECT JSON_AGG(JSON_BUILD_OBJECT('thumbnail_url', photos.thumbnail_url, 'url', photos.url))
+      FROM photos
+      WHERE photos.styleId = styles.id
+      ) AS photos,
       JSONB_OBJECT_AGG(skus.id, JSONB_BUILD_OBJECT('size', skus.size, 'quantity', skus.quantity)) AS skus
-      FROM styles
-      JOIN photos ON photos.styleId = styles.id
-      JOIN skus ON styles.id = skus.styleId
-      WHERE styles.product_id = ${req.path.split('/')[2]}
-      GROUP BY styles.id, styles.name, original_price, sale_price, "default?"`)
+      FROM "styles"
+      JOIN photos
+      ON photos.styleId = styles.id
+      JOIN skus
+      ON styles.id = skus.styleId
+      WHERE product_id = ${req.path.split('/')[2]}
+      GROUP BY styles.id, styles.name`)
       .then((data) => {
         //var results = [];
        // results.push(data.rows);
         // for (var i = 0; i < data.rows.length; i++) {
         //   results.push(data.rows[i]);
         // }
-        for (var i = 0; i < data.rows.length; i++) {
-          data.rows[i].photos = getUniqueListBy(data.rows[i].photos, 'url');
-        }
+        // for (var i = 0; i < data.rows.length; i++) {
+        //   data.rows[i].photos = getUniqueListBy(data.rows[i].photos, 'url');
+        // }
         data.rows = {
           product_id: req.path.split('/')[2],
           results: data.rows}

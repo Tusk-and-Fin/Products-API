@@ -45,17 +45,17 @@ const get = (req, res) => {
       //get styles of product
       db.query(`
       SELECT styles.id AS style_id,
-         name,
-         original_price,
-         sale_price,
-         "default?",
-         JSON_AGG(JSON_BUILD_OBJECT('thumbnail_url', photos.thumbnail_url, 'url', photos.url)) AS photos,
-         JSONB_OBJECT_AGG(skus.id, JSONB_BUILD_OBJECT('size', skus.size, 'quantity', skus.quantity)) AS skus
-  FROM styles
-  JOIN photos ON photos.styleId = styles.id
-  JOIN skus ON styles.id = skus.styleId
-  WHERE styles.product_id = ${req.path.split('/')[2]}
-  GROUP BY styles.id, styles.name, original_price, sale_price, "default?"`)
+      name,
+      original_price,
+      sale_price,
+      "default?",
+      JSON_AGG(JSON_BUILD_OBJECT('thumbnail_url', photos.thumbnail_url, 'url', photos.url)) AS photos,
+      JSONB_OBJECT_AGG(skus.id, JSONB_BUILD_OBJECT('size', skus.size, 'quantity', skus.quantity)) AS skus
+      FROM styles
+      JOIN photos ON photos.styleId = styles.id
+      JOIN skus ON styles.id = skus.styleId
+      WHERE styles.product_id = ${req.path.split('/')[2]}
+      GROUP BY styles.id, styles.name, original_price, sale_price, "default?"`)
       .then((data) => {
         //var results = [];
        // results.push(data.rows);

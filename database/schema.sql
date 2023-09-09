@@ -49,3 +49,7 @@ CREATE INDEX idx_skus_style_id ON skus (styleId);
 CREATE INDEX idx_photos_style_id ON photos (styleId);
 CREATE INDEX idx_photos_url ON photos (url);
 CREATE INDEX idx_photos_thumbnail_url ON photos (thumbnail_url);
+
+CREATE INDEX idx_styles_id ON styles(id);
+CREATE INDEX idx_product_id ON styles(product_id);
+CREATE INDEX idx_features_product_id ON features(product_id);
